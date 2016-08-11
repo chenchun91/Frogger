@@ -203,8 +203,8 @@ define(['Frogger', 'ImageSprite'], function(Frogger, ImageSprite){
   }, false);
 
   Frogger.canvas.addEventListener("touchstart", function (event) {
-    var touchLeft = event.targetTouch[0].clientX,
-      touchTop = event.targetTouch[0].clientY;
+    var touchLeft = event.targetTouches[0].clientX,
+      touchTop = event.targetTouches[0].clientY;
 
     if(touchLeft < (Frogger.drawingSurfaceWidth/8)){
       move(Frogger.direction.LEFT);
@@ -218,8 +218,8 @@ define(['Frogger', 'ImageSprite'], function(Frogger, ImageSprite){
   }, false);
 
   return{
-    getTop:getTop,
-    getPosition:getPosition,
-    setPosition:setPosition
+    getTop: getTop,
+    getPosition: getPosition,
+    setPosition: setPosition
   };
 });
