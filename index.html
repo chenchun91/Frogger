@@ -31,7 +31,44 @@
   <canvas id="canvas" class="canvas" width="960" height="1280"></canvas>
 </body>
   <script>
-    var ua = navigator.userAgent;
-    alert(ua);
+    var getDeviceInfo = function (callback) {
+        window.getSetAppInfo60 = function (json) {
+            //获取包信息回调
+            //{"code":"0","data":{"Sys":"","ProductType":"","Version":"","DeviceType":"","DeviceModel":"","UniqueID":""},"msg":""}
+            try {
+                var jdata = JSON.parse(json);
+                callback(jdata.data);
+            } catch (e) {
+                try {
+                    var jdata = eval('(' + json + ')');
+                    callback(jdata.data);
+                } catch (e1) {
+                    callback({});
+                }
+
+            }
+        }
+
+        function a() {
+            var strCBP = '{"callbackname":"getSetAppInfo60"}';
+            try {
+                if (AG.ISIOS || AG.ISWP) {
+                    window.location = "getDeviceInfo:" + strCBP; //ios
+                }
+                else if (AG.ISAndroid) {
+                    eastmoney.getDeviceInfo(strCBP);
+                } else {
+                    //module.Environment.AppInfo60=module.Environment.browser;
+                }
+                return 1;
+            } catch (e) {
+                return 0;
+            }
+        }
+        setTimeout(a, 100);
+    };
+    getDeviceInfo(function(json){
+      alert(json.Version);
+    });
   </script>
 </html>
