@@ -31,44 +31,21 @@
   <canvas id="canvas" class="canvas" width="960" height="1280"></canvas>
 </body>
   <script>
-    var getDeviceInfo = function (callback) {
-        window.getSetAppInfo60 = function (json) {
-            //获取包信息回调
-            //{"code":"0","data":{"Sys":"","ProductType":"","Version":"","DeviceType":"","DeviceModel":"","UniqueID":""},"msg":""}
-            try {
-                var jdata = JSON.parse(json);
-                callback(jdata.data);
-            } catch (e) {
-                try {
-                    var jdata = eval('(' + json + ')');
-                    callback(jdata.data);
-                } catch (e1) {
-                    callback({});
+    function RequestURL(QueryString) {
+        var strHref = window.location.href;
+        var strParm = "";
+        if (strHref.search(/\?/) != -1) {
+            strHref = strHref.substr(strHref.search(/\?/) + 1);
+            strHref = strHref.split(/&/);
+            for (let iCount = 0; iCount < strHref.length; iCount++) {
+                if (strHref[iCount].search("^" + QueryString + "=") != -1) {
+                    strParm = strHref[iCount].substr(QueryString.length + 1);
                 }
-
             }
+            return (strParm);
         }
-
-        function a() {
-            var strCBP = '{"callbackname":"getSetAppInfo60"}';
-            try {
-                if (AG.ISIOS || AG.ISWP) {
-                    window.location = "getDeviceInfo:" + strCBP; //ios
-                }
-                else if (AG.ISAndroid) {
-                    eastmoney.getDeviceInfo(strCBP);
-                } else {
-                    //module.Environment.AppInfo60=module.Environment.browser;
-                }
-                return 1;
-            } catch (e) {
-                return 0;
-            }
-        }
-        setTimeout(a, 100);
-    };
-    getDeviceInfo(function(json){
-      alert(json.Version);
-    });
+        return (strParm);
+    }
+    var tz = RequestURL("tz");
   </script>
 </html>
